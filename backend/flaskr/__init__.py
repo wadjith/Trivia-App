@@ -105,11 +105,11 @@ def create_app(test_config=None):
     @app.route('/questions/<int:question_id>', methods=['DELETE'])
     def delete_question(question_id):
         try:
-            category = Category.query.get(question_id)
-            if category is None:
+            question = Question.query.get(question_id)
+            if question is None:
                 abort(404)
 
-            category.delete()
+            question.delete()
 
             return jsonify({
                 'success': True,
@@ -238,7 +238,7 @@ def create_app(test_config=None):
 
         if next_question is None:
             abort(404)
-            
+
         return jsonify({
             'success': True,
             'question': next_question.format()
@@ -254,7 +254,7 @@ def create_app(test_config=None):
         return jsonify({
             'success': False,
             'error': 404,
-            'message': 'Not Found'
+            'message': 'Resource Not Found'
         }), 404
     
     @app.errorhandler(422)
