@@ -235,7 +235,7 @@ def create_app(test_config=None):
         quiz_category = body.get('quiz_category', None)
         if previous_questions_id is None or quiz_category is None:
             abort(400)
-            
+
         next_question = Question(question='', answer='', category=0, difficulty=0)
         if quiz_category['id'] == 0:
             next_question = Question.query.filter(~Question.id.in_(previous_questions_id)).first()
@@ -243,7 +243,9 @@ def create_app(test_config=None):
             next_question = Question.query.filter(~Question.id.in_(previous_questions_id)).filter(Question.category==quiz_category['id']).first()
 
         if next_question is None:
-            abort(404)
+            return jsonify({
+                'success': True
+            })
 
         return jsonify({
             'success': True,
